@@ -1,0 +1,13 @@
+{
+    "data" : {},
+    "metadata" : {
+      "sdk_version" : "1.3.9",
+      "device_model" : "iPhone14,2",
+      "timestamp" : "1722823050957",
+      "os_version" : "17.5.1",
+      "os_platform" : "iOS"
+    },
+    "action" : "EXIT_SCREEN",
+    "logLevel" : "INFO",
+    "screenId" : "KLPFaceVC"
+}
