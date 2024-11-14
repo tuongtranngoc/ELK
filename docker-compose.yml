@@ -2,7 +2,7 @@ version: '3'
 services:
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.15.1
-    container_name: elasticsearch
+    container_name: elasticsearch_test
     environment:
       - discovery.type=single-node
       - bootstrap.memory_lock=true
@@ -22,8 +22,8 @@ services:
     volumes:
       - ./configs/logstash:/usr/share/logstash/pipeline
     ports:
-      - 5044:5044
-      - 9600:9600
+      - 5045:5045
+      - 9601:9601
   
   kibana:
     image: docker.elastic.co/kibana/kibana:7.15.1
@@ -32,6 +32,16 @@ services:
       - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
     ports:
       - 5601:5601
+
+  flask_api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: flask_api
+    ports:
+      - "5000:5000"
+    depends_on:
+      - logstash
 
 volumes:
   esdata:
