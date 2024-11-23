@@ -11,12 +11,14 @@ services:
       - "cluster.routing.allocation.disk.watermark.low=85%"
       - "cluster.routing.allocation.disk.watermark.high=90%"
       - "cluster.routing.allocation.disk.watermark.flood_stage=95%"
+    env_file:
+      - .env
     ulimits:
       memlock:
         soft: -1
         hard: -1
     ports:
-      - ${ELASTICSEARCH_PORT}:${ELASTICSEARCH_PORT}
+      - "${ELASTICSEARCH_PORT}:${ELASTICSEARCH_PORT}"
     volumes:
       - ./esdata:/usr/share/elasticsearch/data
     networks:
@@ -25,10 +27,12 @@ services:
   logstash:
     image: docker.elastic.co/logstash/logstash:7.15.1
     container_name: elk_logstash
+    env_file:
+      - .env
     volumes:
       - ./configs/logstash:/usr/share/logstash/pipeline
     ports:
-      - ${LOGSTASH_PORT}:${LOGSTASH_PORT}
+      - "${LOGSTASH_PORT}:${LOGSTASH_PORT}"
       - 9601:9601
     networks:
       - elastic_net
@@ -36,10 +40,12 @@ services:
   kibana:
     image: docker.elastic.co/kibana/kibana:7.15.1
     container_name: elk_kibana
+    env_file:
+      - .env
     environment:
-      - ELASTICSEARCH_HOSTS=${ELASTICSEARCH_HOST}:${ELASTICSEARCH_PORT}
+      - "ELASTICSEARCH_HOSTS=${ELASTICSEARCH_HOST}:${ELASTICSEARCH_PORT}"
     ports:
-      - ${KIBANA_PORT}:${KIBANA_PORT}
+      - "${KIBANA_PORT}:${KIBANA_PORT}"
     networks:
       - elastic_net
 
@@ -48,8 +54,10 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: elk_flask_api
+    env_file:
+      - .env
     ports:
-      - ${API_PORT}:${API_PORT}
+      - "${API_PORT}:${API_PORT}"
     depends_on:
       - logstash
     networks:

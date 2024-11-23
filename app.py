@@ -9,7 +9,7 @@ from configs.elk_config import app_config
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
 
-LOGSTASH_URL = f"http://{app_config.BASE_URL}:{os.getenv('LOGSTASH_PORT')}"
+LOGSTASH_URL = f"http://{app_config.BASE_URL}:{app_config.LOGSTASH_PORT}"
 
 @app.route('/send_data', methods=['POST'])
 def send_data():

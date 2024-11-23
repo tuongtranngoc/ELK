@@ -11,7 +11,7 @@ class BaseConfig:
         LOGSTASH_PORT = 5045
     
     # KIBANA
-    if "BIBANA_HOST" in os.environ:
+    if "KIBANA_HOST" in os.environ:
         KIBANA_HOST = os.environ["KIBANA_HOST"]
     else:
         KIBANA_HOST = "http://elasticsearch" 
