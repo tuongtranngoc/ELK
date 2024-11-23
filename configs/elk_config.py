@@ -2,7 +2,7 @@ import os
 
 
 class BaseConfig:
-    BASE_URL = "192.168.1.9"
+    BASE_URL = "192.168.1.197"
     
     # LOGSTASH
     if "LOGSTASH_PORT" in os.environ:

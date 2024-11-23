@@ -6,7 +6,7 @@ source /etc/environment
 python app.py &
 
 echo "Initialize out.log file" > /app/out.log
-echo "*/2 * * * *   root  cd /app && (/app/data_manager.sh) >> /app/out.log 2>&1" >> /etc/crontab
+echo "0 0 * * *   root  cd /app && (/app/data_manager.sh) >> /app/out.log 2>&1" >> /etc/crontab
 
 service cron reload
 service cron restart
