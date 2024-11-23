@@ -2,47 +2,59 @@ version: '3'
 services:
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.15.1
-    container_name: elasticsearch_test
+    container_name: elk_elasticsearch
     environment:
       - discovery.type=single-node
       - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - xpack.security.enabled=false
+      - "ES_JAVA_OPTS=-Xms10g -Xmx10g"
+      - "cluster.routing.allocation.disk.watermark.low=85%"
+      - "cluster.routing.allocation.disk.watermark.high=90%"
+      - "cluster.routing.allocation.disk.watermark.flood_stage=95%"
     ulimits:
       memlock:
         soft: -1
         hard: -1
     ports:
-      - 9200:9200
+      - ${ELASTICSEARCH_PORT}:${ELASTICSEARCH_PORT}
     volumes:
-      - esdata:/usr/share/elasticsearch/data
+      - ./esdata:/usr/share/elasticsearch/data
+    networks:
+      - elastic_net
 
   logstash:
     image: docker.elastic.co/logstash/logstash:7.15.1
-    container_name: logstash
+    container_name: elk_logstash
     volumes:
       - ./configs/logstash:/usr/share/logstash/pipeline
     ports:
-      - 5045:5045
+      - ${LOGSTASH_PORT}:${LOGSTASH_PORT}
       - 9601:9601
+    networks:
+      - elastic_net
   
   kibana:
     image: docker.elastic.co/kibana/kibana:7.15.1
-    container_name: kibana
+    container_name: elk_kibana
     environment:
-      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+      - ELASTICSEARCH_HOSTS=${ELASTICSEARCH_HOST}:${ELASTICSEARCH_PORT}
     ports:
-      - 5601:5601
+      - ${KIBANA_PORT}:${KIBANA_PORT}
+    networks:
+      - elastic_net
 
   flask_api:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: flask_api
+    container_name: elk_flask_api
     ports:
-      - "5000:5000"
+      - ${API_PORT}:${API_PORT}
     depends_on:
       - logstash
+    networks:
+      - elastic_net
 
-volumes:
-  esdata:
-    driver: local
+networks:
+  elastic_net:
+    driver: bridge

@@ -1,9 +1,15 @@
 from flask import Flask, request
+from flask_cors import CORS
 import requests
+import json
+
+from configs.elk_config import app_config
 
 
 app = Flask(__name__)
-LOGSTASH_URL = "http://192.168.1.197:5045"
+CORS(app, resources={r"/*": {"origins": "*"}})
+
+LOGSTASH_URL = app_config.BASE_URL
 
 
 @app.route('/send_data', methods=['POST'])
@@ -12,8 +18,10 @@ def send_data():
     authorization_header = request.headers.get('Authorization', None)
     if isinstance(data, dict):
         data['user_id'] = authorization_header
-    res = requests.post(LOGSTASH_URL, json=data)
-    return {"status": "Success"}
+        res = requests.post(LOGSTASH_URL, json=data)
+        return {"status": "Success", "message": data}
+    else:
+        return {"status": "Failed", "message": "ValueError: Incorrect data format"}
 
 
 if __name__ == '__main__':

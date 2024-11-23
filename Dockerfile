@@ -8,8 +8,10 @@ WORKDIR /app
 COPY . /app
 
 RUN pip3 install --upgrade pip
-RUN pip3 install flask flask_cors
+
 RUN pip install requests
+RUN pip install elasticsearch
+RUN pip3 install flask flask_cors
 
 EXPOSE 5000
 
