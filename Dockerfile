@@ -1,7 +1,6 @@
 FROM python:3.10.11
 ENV DEBIAN_FRONTEND=noninteractive
 
-#Install libs
 RUN apt-get update && apt-get install -y
 
 WORKDIR /app
@@ -15,5 +14,4 @@ RUN pip3 install flask flask_cors
 
 EXPOSE 5000
 
-# Run app.py when the container launches
 CMD ["python", "app.py"]

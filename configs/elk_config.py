@@ -2,8 +2,7 @@ import os
 
 
 class BaseConfig:
-    KIBANA_HOST = "http://elasticsearch"
-    BASE_URL = "192.168.1.197"
+    BASE_URL = "192.168.1.9"
     
     # LOGSTASH
     if "LOGSTASH_PORT" in os.environ:
@@ -13,9 +12,10 @@ class BaseConfig:
     
     # KIBANA
     if "BIBANA_HOST" in os.environ:
-        LOGSTASH_HOST = os.environ["KIBANA_HOST"]
+        KIBANA_HOST = os.environ["KIBANA_HOST"]
     else:
-        KIBANA_HOST = None 
+        KIBANA_HOST = "http://elasticsearch" 
+        
     if "KIBANA_PORT" in os.environ:
         KIBANA_PORT = os.environ["KIBANA_PORT"]
     else:

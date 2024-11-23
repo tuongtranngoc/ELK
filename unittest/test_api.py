@@ -1,11 +1,14 @@
+import sys
 import json
-
 import requests
 
+sys.path.insert(0, ".")
 
-url = f'http://192.168.1.197:5000/send_data'
+from configs.elk_config import app_config
 
-headers = {'Content-type': 'application/json', 'Authorization': 'Kalapa_123456789'}
+url = f'http://{app_config.BASE_URL}:{app_config.LOGSTASH_PORT}/send_data'
+
+headers = {'Content-type': 'application/json', 'Authorization': '123456789'}
 data = json.load(open('data/messages/logs.json'))
 
 res = requests.post(url, data=json.dumps(data, ensure_ascii=False).encode('utf-8'), headers=headers).json()
