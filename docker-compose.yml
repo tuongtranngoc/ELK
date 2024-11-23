@@ -43,7 +43,7 @@ services:
     env_file:
       - .env
     environment:
-      - "ELASTICSEARCH_HOSTS=${ELASTICSEARCH_HOST}:${ELASTICSEARCH_PORT}"
+      - "ELASTICSEARCH_HOSTS=${KIBANA_HOST}:${ELASTICSEARCH_PORT}"
     ports:
       - "${KIBANA_PORT}:${KIBANA_PORT}"
     networks:
