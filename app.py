@@ -20,7 +20,7 @@ def send_data():
         res = requests.post(LOGSTASH_URL, json=data)
         return {"status": "Success", "message": data}
     else:
-        return {"status": "Error"}
+        return {"status": "Error", "message": None}
 
 
 if __name__ == '__main__':
